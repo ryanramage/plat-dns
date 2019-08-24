@@ -1,0 +1,11 @@
+{
+  "dnsPort": "53",
+  "httpPort": "80",
+  "host": "127.0.0.1",
+  "httpIP": "127.0.0.1",
+  "redirect": "https://www.google.com/maps/search/?api=1&query=${specifiedCenter}",
+  "ttl": 300,
+  "disableDnsServer": false,
+  "disableWebServer": false,
+  "dbdir": "data"
+}

@@ -1,0 +1,31 @@
+{
+  "name": "plat-dns",
+  "version": "1.0.0",
+  "description": "Using DNS to plat the earth. Easy to publish, update, and distribute maps and location info.",
+  "bin": "./bin/run.js",
+  "scripts": {
+    "start": "./bin/run.js"
+  },
+  "author": "Ryan Ramage",
+  "license": "Apache License 2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ryanramage/plat-dns.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ryanramage/plat-dns/issues"
+  },
+  "homepage": "https://github.com/ryanramage/plat-dns",
+  "dependencies": {
+    "@turf/center": "^6.0.1",
+    "async": "^3.1.0",
+    "dat-sdk": "^0.2.2",
+    "express": "^4.17.1",
+    "fast-json-parse": "^1.0.3",
+    "level": "^5.0.1",
+    "lodash.get": "^4.4.2",
+    "lodash.template": "^4.5.0",
+    "mname": "^1.5.0",
+    "rc": "^1.2.8"
+  }
+}
