@@ -84,4 +84,11 @@ Notes
 
  - You can continue to add/edit/delete files in your shared folder. These will magically update on the domain.
  - dat is a p2p protocol so you might want to create a mirror of your data on hashbase.io or another peer service
- 
+
+
+The Dream
+---------
+
+One day, in map providers, you will be able to put in a dns into their search box, and a beautiful polygon will appear. Google does not have to manage it, and you have ownership over it.
+
+![Google oliver.neighbourhoods.edmonton.ca](docs/google.png)
