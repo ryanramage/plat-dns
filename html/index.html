@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{config.branding}} | {{place.name}}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="referrer" content="origin">
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="{{config.branding}}" />
+    <meta property="og:title" content="{{place.name}]" />
+    <meta property="og:description" content="{{place.name}} is a place" />
+
+    <meta property="twitter:card" value="summary" />
+    <meta property="twitter:site" content="@alloftheplaces" />
+    <meta property="twitter:creator" content="@alloftheplaces" />
+    <meta property="twitter:url" content="{{place.domain}}" />
+    <meta property="twitter:title" content="{{place.name}}" />
+    <meta property="twitter:description" content="{{place.name}} is a place :flag-ca:" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+      integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+      crossorigin=""/>
+      <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+      integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+      crossorigin=""></script>
+
+    <style>
+      #map { height: 400px; }
+    </style>
+</head>
+<body>
+    <div class="container" id="content">
+      <div class="row">
+        <h2>
+          {{place.name}}
+          <small>{{place.domain}}</small
+        </h2>
+        <div></div>
+      </div>
+      <div class="row">
+        <div class="col-md-12" id="map"></div>
+      </div>
+      <div class="row">
+        <ul>
+          {{#collection}}
+            <li><a href="http://{{.}}">{{.}}</a></li>
+          {{/collection}}
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      window.addEventListener('load', function() {
+
+        var map = L.map('map')
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'}).addTo(map)
+
+        let specifiedCenter = [{{{geo.specifiedCenter}}}]
+        if (specifiedCenter) {
+          map.setView(specifiedCenter, 13);
+          var marker = L.marker(specifiedCenter).addTo(map);
+        }
+
+        let geojson = {{{geo.geojson}}}
+        if (geojson) L.geoJSON(geojson).addTo(map)
+
+        let box = {{{geo.box}}}
+        if (box) {
+          map.fitBounds([
+            [box[1], box[0]],
+            [box[3], box[2]]
+          ])
+        }
+      })
+    </script>
+</body>
+</html>

@@ -30,12 +30,12 @@ Let's say you are admin a city with the domain `edmonton.ca`. You might want to 
 Step 2 - Choose a plat-dns server
 -----------------------------------
 
-You can run this project on a server, or use our public plat server at ns.ramage.in
+You can run this project on a server, or use our public plat server at ns.flap.to
 
 Step 3 - Add an NS record that points to plat
 -----------------------------------------------
 
-Type: NS, Host: neighbourhoods, Value: ns.ramage.in
+Type: NS, Host: neighbourhoods, Value: ns.flap.to
 
 Use the above information to put a record in **your** nameserver. This will point all *.neighbourhoods.edmonton.ca queries to the plat server selected in step 2.
 
