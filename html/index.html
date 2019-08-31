@@ -21,7 +21,7 @@
     <meta property="twitter:url" content="{{place.domain}}" />
     <meta property="twitter:title" content="{{place.name}}" />
     <meta property="twitter:description" content="{{place.name}} is a place :flag-ca:" />
-
+    <link rel="icon" href="https://unpkg.com/leaflet@1.4.0/dist/images/marker-icon.png">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
       integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
       crossorigin=""/>
@@ -46,32 +46,34 @@
       <div class="row">
         <div class="col-md-12" id="map"></div>
       </div>
+
       <div class="row">
+        <h4>Collection</h4>
         <ul>
           {{#collection}}
-            <li><a href="http://{{.}}">{{.}}</a></li>
+            <li><a href="http://{{domain}}">{{domain}}</a></li>
           {{/collection}}
         </ul>
       </div>
-    </div>
 
+    </div>
     <script>
       window.addEventListener('load', function() {
 
+        let specifiedCenter = [{{{geo.specifiedCenter}}}]
+        let geojson = {{{geo.geojson}}}
+        let box = {{{geo.box}}}
+
+        if ((!specifiedCenter || !specifiedCenter[0]) && (!geojson || !geojson.features || !geojson.features.length)) {
+          let map = document.getElementById('map')
+          map.parentNode.removeChild(map)
+          return
+        }
         var map = L.map('map')
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'}).addTo(map)
-
-        let specifiedCenter = [{{{geo.specifiedCenter}}}]
-        if (specifiedCenter) {
-          map.setView(specifiedCenter, 13);
-          var marker = L.marker(specifiedCenter).addTo(map);
-        }
-
-        let geojson = {{{geo.geojson}}}
-        if (geojson) L.geoJSON(geojson).addTo(map)
-
-        let box = {{{geo.box}}}
-        if (box) {
+        if (specifiedCenter && specifiedCenter[0]) map.setView(specifiedCenter, 13);
+        if (geojson && geojson.features && geojson.features.length) L.geoJSON(geojson).addTo(map)
+        if (box && box[0]) {
           map.fitBounds([
             [box[1], box[0]],
             [box[3], box[2]]
