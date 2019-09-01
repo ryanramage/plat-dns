@@ -22,6 +22,7 @@
     <meta property="twitter:title" content="{{place.name}}" />
     <meta property="twitter:description" content="{{place.name}} is a place :flag-ca:" />
     <link rel="icon" href="https://unpkg.com/leaflet@1.4.0/dist/images/marker-icon.png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
       integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
       crossorigin=""/>
@@ -36,17 +37,28 @@
 </head>
 <body>
     <div class="container" id="content">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="#">Library</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Data</li>
+        </ol>
+      </nav>
+
       <div class="row">
         <h2>
           {{place.name}}
-          <small>{{place.domain}}</small
         </h2>
-        <div></div>
       </div>
       <div class="row">
         <div class="col-md-12" id="map"></div>
       </div>
-
+      {{#links.google}}
+      <div class="row">
+        <a class="btn btn-primary" href="{{directions}}" role="button">Get Directions</a>
+        <a class="btn btn-outline-secondary" href="{{point}}" role="button">Open in Google</a>
+      </div>
+      {{/links.google}}
       <div class="row">
         <h4>Collection</h4>
         <ul>
