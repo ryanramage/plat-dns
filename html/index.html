@@ -32,23 +32,31 @@
       crossorigin=""></script>
 
     <style>
-      #map { height: 400px; }
+      #map { height: 350px; }
+      #domainName {
+        margin-left: 15px;
+        overflow-wrap: break-word;
+        word-break: break-all;
+      }
     </style>
 </head>
 <body>
     <div class="container" id="content">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item"><a href="#">Library</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Data</li>
+          {{#links.breadcrumbs}}
+          <li class="breadcrumb-item {{#active}}active{{/active}}" {{#active}}aria-current="page"{{/active}}>
+            {{#active}}{{name}}{{/active}}
+            {{^active}}<a href="{{url}}">{{name}}</a>{{/active}}
+          </li>
+          {{/links.breadcrumbs}}
         </ol>
       </nav>
 
       <div class="row">
-        <h2>
-          {{place.name}}
-        </h2>
+        <h1 id="domainName">
+          {{place.name}}<small class="text-muted">.{{place.parent}}</small>
+        </h1>
       </div>
       <div class="row">
         <div class="col-md-12" id="map"></div>
