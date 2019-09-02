@@ -8,3 +8,11 @@ tape('breadcrumbs', t => {
   t.equals(result.breadcrumbs.length, 4)
   t.end()
 })
+
+tape('breadcrumbs', t => {
+  let result = links('1,1', 'food.locations.ramage.in', '/in/ramage/locations/food/index.json')
+  console.log(result)
+  t.ok(result)
+  t.equals(result.breadcrumbs.length, 3)
+  t.end()
+})
