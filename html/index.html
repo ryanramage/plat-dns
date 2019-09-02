@@ -74,6 +74,9 @@
           {{/collection}}
         </ul>
       </div>
+
+      {{#hasProperties}}
+
       <div class="row">
         <h4>Properties</h4>
         <table class="table">
@@ -94,10 +97,14 @@
         </table>
       </div>
 
+      {{/hasProperties}}
+
+      {{#hasGeojson}}
       <div class="row">
         <h5>GeoJSON</h5>
         <pre>{{{geo.geojson}}}</pre>
       </div>
+      {{/hasGeojson}}
 
     </div>
     <script>
