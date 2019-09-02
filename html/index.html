@@ -38,6 +38,9 @@
         word-break: break-all;
         font-size: 10px;
       }
+      #collection {
+        margin-top: 5px;
+      }
     </style>
 </head>
 <body>
@@ -67,13 +70,17 @@
   </div>
   {{/links.google}}
 
-  <div class="container-fluid">
+  {{#isCollection}}
+  <div id="collection" class="container-fluid">
+    <h5>Collection</h5>
     <ul>
       {{#collection}}
         <li><a href="http://{{domain}}">{{domain}}</a></li>
       {{/collection}}
     </ul>
   </div>
+  {{/isCollection}}
+
   {{#hasProperties}}
   <div class="container-fluid">
     <h4>Properties</h4>
