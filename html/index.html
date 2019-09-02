@@ -34,112 +34,106 @@
     <style>
       #map { height: 350px; }
       #domainName {
-        margin-left: 15px;
         overflow-wrap: break-word;
         word-break: break-all;
       }
     </style>
 </head>
 <body>
-    <div class="container" id="content">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          {{#links.breadcrumbs}}
-          <li class="breadcrumb-item {{#active}}active{{/active}}" {{#active}}aria-current="page"{{/active}}>
-            {{#active}}{{name}}{{/active}}
-            {{^active}}<a href="{{url}}">{{name}}</a>{{/active}}
-          </li>
-          {{/links.breadcrumbs}}
-        </ol>
-      </nav>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      {{#links.breadcrumbs}}
+      <li class="breadcrumb-item {{#active}}active{{/active}}" {{#active}}aria-current="page"{{/active}}>
+        {{#active}}{{name}}{{/active}}
+        {{^active}}<a href="{{url}}">{{name}}</a>{{/active}}
+      </li>
+      {{/links.breadcrumbs}}
+    </ol>
+  </nav>
+  <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 id="domainName" class="text-break  text-wrap">{{place.domain}}</h1>
+  </div>
 
-      <div class="row">
-        <h1 id="domainName">
-          <small class="text-muted">{{place.name}}.{{place.parent}}</small>
-        </h1>
-      </div>
-      <div class="row">
-        <div class="col-md-12" id="map"></div>
-      </div>
-      {{#links.google}}
-      <div class="row">
-        <a class="btn btn-primary" href="{{directions}}" role="button">Get Directions</a>
-        <a class="btn btn-outline-secondary" href="{{point}}" role="button">Open in Google</a>
-      </div>
-      {{/links.google}}
-      <div class="row">
-        <ul>
-          {{#collection}}
-            <li><a href="http://{{domain}}">{{domain}}</a></li>
-          {{/collection}}
-        </ul>
-      </div>
+  <div class="container-fluid">
+    <div class="col-md-12" id="map"></div>
+  </div>
 
-      {{#hasProperties}}
+  {{#links.google}}
+  <div class="container-fluid">
+    <a class="btn btn-primary" href="{{directions}}" role="button">Get Directions</a>
+    <a class="btn btn-outline-secondary" href="{{point}}" role="button">Open in Google</a>
+  </div>
+  {{/links.google}}
 
-      <div class="row">
-        <h4>Properties</h4>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Key</th>
-              <th scope="col">Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            {{#properties}}
-              <tr>
-                <td>{{key}}</td>
-                <td>{{value}}</td>
-              </tr>
-            {{/properties}}
-          </tbody>
-        </table>
-      </div>
+  <div class="container-fluid">
+    <ul>
+      {{#collection}}
+        <li><a href="http://{{domain}}">{{domain}}</a></li>
+      {{/collection}}
+    </ul>
+  </div>
+  {{#hasProperties}}
+  <div class="container-fluid">
+    <h4>Properties</h4>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Key</th>
+          <th scope="col">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#properties}}
+          <tr>
+            <td>{{key}}</td>
+            <td>{{value}}</td>
+          </tr>
+        {{/properties}}
+      </tbody>
+    </table>
+  </div>
+  {{/hasProperties}}
 
-      {{/hasProperties}}
+  {{#hasGeojson}}
+  <div class="container-fluid">
+    <h5>GeoJSON</h5>
+    <pre>{{{geo.geojson}}}</pre>
+  </div>
+  {{/hasGeojson}}
 
-      {{#hasGeojson}}
-      <div class="row">
-        <h5>GeoJSON</h5>
-        <pre>{{{geo.geojson}}}</pre>
-      </div>
-      {{/hasGeojson}}
+  <script>
+    window.addEventListener('load', function() {
 
-    </div>
-    <script>
-      window.addEventListener('load', function() {
+      let specifiedCenter = [{{{geo.specifiedCenter}}}]
+      let geojson = {{{geo.geojson}}}
+      let box = {{{geo.box}}}
 
-        let specifiedCenter = [{{{geo.specifiedCenter}}}]
-        let geojson = {{{geo.geojson}}}
-        let box = {{{geo.box}}}
-
-        if ((!specifiedCenter || !specifiedCenter[0]) && (!geojson || !geojson.features || !geojson.features.length)) {
-          let map = document.getElementById('map')
-          map.parentNode.removeChild(map)
-          return
-        }
-        var map = L.map('map')
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'}).addTo(map)
-        if (specifiedCenter && specifiedCenter[0]) map.setView(specifiedCenter, 13);
-        if (geojson && geojson.features && geojson.features.length) {
-          L.geoJSON(geojson).bindPopup(function (layer) {
-            let name = layer.feature.properties.name
-            let domain = layer.feature.properties.domain
-            if (!name) {
-              name = '{{place.name}}'
-              domain = '{{place.domain}}'
-            }
-            return `${name}<br><a href="http://${domain}">${domain}</a>`;
-          }).addTo(map)
-        }
-        if (box && box[0]) {
-          map.fitBounds([
-            [box[1], box[0]],
-            [box[3], box[2]]
-          ])
-        }
-      })
-    </script>
+      if ((!specifiedCenter || !specifiedCenter[0]) && (!geojson || !geojson.features || !geojson.features.length)) {
+        let map = document.getElementById('map')
+        map.parentNode.removeChild(map)
+        return
+      }
+      var map = L.map('map')
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'}).addTo(map)
+      if (specifiedCenter && specifiedCenter[0]) map.setView(specifiedCenter, 13);
+      if (geojson && geojson.features && geojson.features.length) {
+        L.geoJSON(geojson).bindPopup(function (layer) {
+          let name = layer.feature.properties.name
+          let domain = layer.feature.properties.domain
+          if (!name) {
+            name = '{{place.name}}'
+            domain = '{{place.domain}}'
+          }
+          return `${name}<br><a href="http://${domain}">${domain}</a>`;
+        }).addTo(map)
+      }
+      if (box && box[0]) {
+        map.fitBounds([
+          [box[1], box[0]],
+          [box[3], box[2]]
+        ])
+      }
+    })
+  </script>
 </body>
 </html>
