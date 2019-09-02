@@ -1,7 +1,7 @@
 plat-dns
 ========
 
-A plat is a map, drawn to scale, showing the divisions of a piece of land. Plat-dns is a tool that uses the dns system to let domain owners administer their land divisions with ease.
+A plat is a map, drawn to scale, showing the divisions of a piece of land. Plat-dns is a tool that uses the dns system to let domain owners administer their land divisions with ease. It is a multi-protocol server that can respond to gis information over dns, html, json, and dat.
 
 Sales Pitch
 -----------
@@ -48,9 +48,23 @@ Step 5 - Create some shape files
 ---------------------------------
 
 As a suggestion to test, you can go to http://geojson.io, and create a point, or polygon of your location. Then
-In the menu click save -> GeoJson. Copy that file to the folder in step 4, and rename it the domain that it represents, eg `oliver.neighbourhoods.edmonton.ca` . Don't add a suffix.
+In the menu click save -> GeoJson. Copy that file to the folder in step 4. You need to mirror the domain structure in folders.
 
-Repeat this step with all the shapes you want to name.
+For the neighbourhood example, you'd have something like
+
+```
+/ca
+ /edmonton
+   /neighbourhoods
+     - oliver.json
+     - mccauley.json
+     - ...
+
+```
+
+A more involved structure can look like this:
+
+![folder structure](docs/folder.png)
 
 Step 5 - Share this folder
 --------------------------
@@ -76,7 +90,17 @@ Now that you've delegated to the domain to plat, you need to tell it about your 
 Step 7 - test
 --------------
 
-Now in a browser you should be able to visit `http://oliver.neighbourhoods.edmonton.ca`. A google map pin will be returned to you!
+Now in a browser you should be able to visit `http://oliver.neighbourhoods.edmonton.ca`. You should get a nice landing page.
+
+Multiprotocol
+-------------
+
+Because the server is multi-protocol you can access the geo information through various clients.
+
+ - html: A browser to waterfall.home.locations.ramage.in or ```curl -H "Accept: text/html" waterfall.home.locations.ramage.in```
+ - json: ```curl -H "Accept: application/json" waterfall.home.locations.ramage.in```
+ - dns: ```dig waterfall.home.locations.ramage.in TXT```
+ - dat: ```dat clone dat://locations.ramage.in```
 
 
 Notes
