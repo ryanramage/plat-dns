@@ -55,7 +55,7 @@
 
       <div class="row">
         <h1 id="domainName">
-          {{place.name}}<small class="text-muted">.{{place.parent}}</small>
+          <small class="text-muted">{{place.name}}.{{place.parent}}</small>
         </h1>
       </div>
       <div class="row">
@@ -68,12 +68,35 @@
       </div>
       {{/links.google}}
       <div class="row">
-        <h4>Collection</h4>
         <ul>
           {{#collection}}
             <li><a href="http://{{domain}}">{{domain}}</a></li>
           {{/collection}}
         </ul>
+      </div>
+      <div class="row">
+        <h4>Properties</h4>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Key</th>
+              <th scope="col">Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#properties}}
+              <tr>
+                <td>{{key}}</td>
+                <td>{{value}}</td>
+              </tr>
+            {{/properties}}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row">
+        <h5>GeoJSON</h5>
+        <pre>{{{geo.geojson}}}</pre>
       </div>
 
     </div>
