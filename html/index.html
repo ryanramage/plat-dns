@@ -125,8 +125,12 @@
         if (geojson && geojson.features && geojson.features.length) {
           L.geoJSON(geojson).bindPopup(function (layer) {
             let name = layer.feature.properties.name
-            if (!name) name = '{{place.name}}'
-            return name;
+            let domain = layer.feature.properties.domain
+            if (!name) {
+              name = '{{place.name}}'
+              domain = '{{place.domain}}'
+            }
+            return `${name}<br><a href="${domain}">${domain}</a>`;
           }).addTo(map)
         }
         if (box && box[0]) {
