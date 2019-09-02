@@ -130,7 +130,7 @@
               name = '{{place.name}}'
               domain = '{{place.domain}}'
             }
-            return `${name}<br><a href="${domain}">${domain}</a>`;
+            return `${name}<br><a href="http://${domain}">${domain}</a>`;
           }).addTo(map)
         }
         if (box && box[0]) {
