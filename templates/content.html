@@ -7,6 +7,9 @@
     </li>
     {{/links.breadcrumbs}}
   </ol>
+  <button id="liveMode" type="button" class="btn btn-outline-secondary" data-toggle="button" aria-pressed="false" autocomplete="off">
+    Live Update
+  </button>
 </nav>
 <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
   <h6 class="display-4">{{place.name}}</h6>
@@ -23,9 +26,6 @@
   <a class="btn btn-primary" href="{{directions}}" role="button">Get Directions</a>
   <a class="btn btn-outline-secondary" href="{{point}}" role="button">Open in Google</a>
   {{/links.google}}
-  <button id="liveMode" type="button" class="btn btn-outline-secondary" data-toggle="button" aria-pressed="false" autocomplete="off">
-    Live Update
-  </button>
 </div>
 
 {{#isCollection}}

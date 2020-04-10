@@ -33,6 +33,9 @@
     <script src="https://unpkg.com/jquery@3.4.1/dist/jquery.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- <script src="https://bundle.run/dat-sdk@1"></script>
+    <script src="https://bundle.run/dat-sdk@1/promise.js"></script>
+    <script src="https://bundle.run/dat-sdk@1/auto.js"></script> -->
     <script src="./html/live.js"></script>
     <style>
       #map { height: 350px; }
@@ -47,9 +50,16 @@
       #developersButton {
         margin-right: 20px;
       }
+      #liveMode {
+        position: absolute;
+        right: 4px;
+        top: 2px;
+      }
     </style>
 </head>
 <body>
+  {{{content}}}
+
   <script>
     window.addEventListener('load', function() {
 
@@ -65,8 +75,16 @@
       var map = L.map('map')
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'}).addTo(map)
       if (specifiedCenter && specifiedCenter[0]) map.setView(specifiedCenter, 13);
+      var pathsOfInterest = []
+      var watchPathToLayer = {}
       if (geojson && geojson.features && geojson.features.length) {
-        L.geoJSON(geojson).bindPopup(function (layer) {
+        L.geoJSON(geojson, {
+          onEachFeature: function (feature, layer) {
+            var watchPath = feature.properties.watchPath
+            pathsOfInterest.push(watchPath)
+            watchPathToLayer[watchPath] = layer
+          }
+        }).bindPopup(function (layer) {
           let name = layer.feature.properties.name
           let domain = layer.feature.properties.domain
           if (!name) {
@@ -82,9 +100,36 @@
           [box[3], box[2]]
         ])
       }
-
+      const SDK = window.datSDK
+      const datUrl = 'dat://{{developer.datKey}}'
+      console.log(datUrl, pathsOfInterest)
       $('#liveMode').on('click', function () {
-        console.log('live mode!')
+        var onReady = function () {
+          console.log("READY")
+          // update button
+        }
+
+        __platLive(datUrl, onReady, function (fullGeo) {
+          console.log(fullGeo)
+          var features = fullGeo.geojson.features || []
+          features.forEach(function (f) {
+            var coords = f.geometry.coordinates
+            var latLon = [coords[1], coords[0]]
+            var watchPath = f.properties.watchPath
+            var layer = watchPathToLayer[watchPath]
+            if (!layer) return
+            layer.setLatLng(latLon)
+          })
+
+          // if (!details.data) return
+          // var layer = watchPathToLayer[details.path]
+          // if (!layer) return
+          // if (!details.data.specifiedCenter) return
+          // console.log('the specifiedCenter', details.data.specifiedCenter)
+          // var latLon = details.data.specifiedCenter.split(',').map(function (n) { return Number(n) })
+          // console.log('setting lat and lon', latLon)
+          // layer.setLatLng(latLon)
+        })
       })
 
     })

@@ -10,5 +10,6 @@
   "disableCollectionListing": false,
   "directoryIndex": "index.json",
   "branding": "Plat Server",
-  "htmlTemplate": "html/index.html"  
+  "htmlTemplate": "html/index.html",
+  "htmlContentTemplate": "templates/content.html"  
 }

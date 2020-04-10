@@ -1,0 +1,5 @@
+{
+  "testDomain": "food.locations.ramage.in",
+  "httpPort": "9382",
+  "disableDnsServer": true
+}
